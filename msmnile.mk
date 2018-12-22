@@ -235,14 +235,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_BOOT_JARS += \
     org.ifaa.android.manager
 
-# Insmod files
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/init.insmod.cfg:$(TARGET_COPY_OUT_VENDOR)/etc/init.insmod.cfg
-
 # Init
 PRODUCT_PACKAGES += \
     init.qcom.post_boot.sh \
-    init.insmod.sh \
     init.qcom.rc \
     init.qcom.sh \
     init.qcom.usb.rc \

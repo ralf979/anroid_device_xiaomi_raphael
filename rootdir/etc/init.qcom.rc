@@ -40,9 +40,6 @@ on early-init
     chown system graphics /sys/kernel/debug/dri/0/debug/recovery_vbif_dbgbus
 
 on init
-    # Loading kernel modules in background
-    start insmod_sh
-
     # Create cgroup mount point for memory
     mkdir /sys/fs/cgroup/memory/bg 0750 root system
     write /sys/fs/cgroup/memory/bg/memory.swappiness 140
@@ -50,22 +47,23 @@ on init
     chown root system /sys/fs/cgroup/memory/bg/tasks
     chmod 0660 /sys/fs/cgroup/memory/bg/tasks
 
-on post-fs
-    chmod 0755 /sys/kernel/debug/tracing
-
-    # Disable sched autogroup
-    write /proc/sys/kernel/sched_autogroup_enabled 0
-
     # Start services for bootanim
     start surfaceflinger
     start bootanim
-    start vendor.hwcomposer-2-3
+    start vendor.hwcomposer-2-2
     start vendor.configstore-hal
     start vendor.qti.hardware.display.allocator
 
 on early-boot
-    # Wait for devices
-    wait_for_prop vendor.all.devices.ready 1
+    # set RLIMIT_MEMLOCK to 64MB
+    setrlimit 8 67108864 67108864
+
+    # Allow subsystem (modem etc) debugging
+    write /sys/kernel/boot_adsp/boot 1
+    write /sys/kernel/boot_cdsp/boot 1
+    write /sys/devices/virtual/npu/msm_npu/boot 1
+    write /sys/kernel/boot_slpi/boot 1
+    write /sys/devices/virtual/cvp/cvp/boot 1
 
     write /sys/class/drm/card0-DSI-1/status "detect"
     write /sys/module/drm/parameters/vblankoffdelay -1
@@ -326,13 +324,6 @@ service charger /system/bin/charger
     class charger
     group system graphics
     seclabel u:r:charger:s0
-
-service insmod_sh /vendor/bin/init.insmod.sh /vendor/etc/init.insmod.cfg
-    class main
-    user root
-    group root system
-    disabled
-    oneshot
 
 service vendor.msm_irqbalance /vendor/bin/msm_irqbalance -f /vendor/etc/msm_irqbalance.conf
     class core

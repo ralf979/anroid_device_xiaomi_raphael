@@ -257,9 +257,6 @@ case "$target" in
     # Setup readahead
     find /sys/devices -name read_ahead_kb | while read node; do echo 128 > $node; done
 
-    # Turn on sleep modes
-    echo 0 > /sys/module/lpm_levels/parameters/sleep_disabled
-
     configure_memory_parameters
 
     echo "18432,23040,27648,32256,85296,120640" > /sys/module/lowmemorykiller/parameters/minfree
