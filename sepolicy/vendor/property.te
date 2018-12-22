@@ -11,3 +11,7 @@ type cust_test_prop, property_type;
 type carrier_prop, property_type;
 type miui_prop, property_type;
 type bluetooth_vendor_prop, property_type;
+
+# Insmod
+type sysfs_msm_boot, fs_type, sysfs_type;
+type vendor_device_prop, property_type;
