@@ -110,7 +110,8 @@ PRODUCT_PACKAGES += \
 
 # Livedisplay
 PRODUCT_PACKAGES += \
-    lineage.livedisplay@2.0-service-sdm
+    vendor.lineage.livedisplay@2.0-service-sdm \
+    vendor.lineage.livedisplay@2.0-service.raphael
 
 # Media
 PRODUCT_COPY_FILES += \
