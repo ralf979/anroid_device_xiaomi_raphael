@@ -23,8 +23,7 @@
 #include <fstream>
 
 #define LCD_LED         "/sys/class/backlight/panel0-backlight/"
-//#define BLUE_LED        "/sys/class/leds/blue/"  //Right LED
-#define GREEN_LED       "/sys/class/leds/green/"  //Left LED
+#define BLUE_LED        "/sys/class/leds/green/"
 
 #define BREATH          "breath"
 #define BRIGHTNESS      "brightness"
@@ -95,26 +94,21 @@ static void handleBacklight(const LightState& state) {
 }
 
 static void handleNotification(const LightState& state) {
-    uint32_t greenBrightness = getScaledBrightness(state, MAX_LED_BRIGHTNESS);
+    uint32_t blueBrightness = getScaledBrightness(state, MAX_LED_BRIGHTNESS);
 
     /* Disable breathing or blinking */
+    set(BLUE_LED BREATH, 0);
+    set(BLUE_LED BRIGHTNESS, 0);
 
-    set(GREEN_LED BREATH, 0);
-    set(GREEN_LED DELAY_OFF, 0);
-    set(GREEN_LED DELAY_ON, 0);
+    if (state.flashMode == Flash::TIMED) {
+        /* Blue */
+        set(BLUE_LED DELAY_OFF, state.flashOnMs);
+        set(BLUE_LED DELAY_ON, state.flashOffMs);
 
-    switch (state.flashMode) {
-        case Flash::HARDWARE:
-            /* Breathing */  
-            set(GREEN_LED BREATH, 1);
-            break;
-        case Flash::TIMED:
-            /* Blinking */
-            set(GREEN_LED BREATH, 1);
-            break;
-        case Flash::NONE:
-        default:
-            set(GREEN_LED BRIGHTNESS, greenBrightness);
+        /* Enable Breathing */
+        set(BLUE_LED BREATH, 1);
+    } else {
+        set(BLUE_LED BRIGHTNESS, blueBrightness);
     }
 }
 
