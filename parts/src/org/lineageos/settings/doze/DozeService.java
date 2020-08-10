@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.android.settings.doze;
+package org.lineageos.settings.doze;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -76,8 +76,7 @@ public class DozeService extends Service {
 
     private void onDisplayOn() {
         if (DEBUG) Log.d(TAG, "Display on");
-        if (DozeUtils.isPickUpEnabled(this) ||
-                DozeUtils.isRaiseToWakeEnabled(this)) {
+        if (DozeUtils.isPickUpEnabled(this)) {
             mPickupSensor.disable();
         }
         if (DozeUtils.isHandwaveGestureEnabled(this) ||
@@ -88,8 +87,7 @@ public class DozeService extends Service {
 
     private void onDisplayOff() {
         if (DEBUG) Log.d(TAG, "Display off");
-        if (DozeUtils.isPickUpEnabled(this) ||
-                DozeUtils.isRaiseToWakeEnabled(this)) {
+        if (DozeUtils.isPickUpEnabled(this)) {
             mPickupSensor.enable();
         }
         if (DozeUtils.isHandwaveGestureEnabled(this) ||

@@ -55,8 +55,7 @@ PRODUCT_PACKAGES += \
 
 # Device-specific settings
 PRODUCT_PACKAGES += \
-    XiaomiParts \
-    XiaomiDoze
+    XiaomiParts
 
 # Display
 PRODUCT_PACKAGES += \
